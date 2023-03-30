@@ -27,24 +27,26 @@ function setMap(){
 
     var promises = [
         d3.csv("data/countiesData.csv"),
-        d3.json("data/Counties.topojson")
+        d3.json("data/Counties.topojson"),
+        d3.json("data/Midwest_states.topojson")
     ];
 
     Promise.all(promises).then(callback);
 
     function callback(data){
         var csvData = data[0],
-            counties = data[1];
+            counties = data[1],
+            states = data[2];
         //soft convert to use topojson format
         var Counties = topojson.feature(counties, counties.objects.Counties).features; //the .features part puts it in array format for loading each county one by one
-        
+        var midStates = topojson.feature(states, states.objects.Midwest_states)
 
     //add WI Counties to the map all at once - would remove the .features from the above line if doing it this way
-   /* var WICounties = map.append("path")
-        .datum(Counties) //drawing all counties together
-        .attr("class", "counties")
-        .attr("d", path); //setting "d" to the path variable, "d" defines the coordinates of the path - has nothing to do with d used in a function
-    */
+        var Midwest = map.append("path")
+            .datum(midStates) //drawing all counties together
+            .attr("class", "states")
+            .attr("d", path); //setting "d" to the path variable, "d" defines the coordinates of the path - has nothing to do with d used in a function
+    
         var WICounties = map.selectAll(".counties")
             .data(Counties)
             .enter()

@@ -2,6 +2,7 @@
 
 /*Rule: assign static or defualt styles in CSS*/
 
+/* this following part was for the bubblechart
 .axis path,
 .axis line {
     fill: none;
@@ -20,7 +21,7 @@
     font-size: 1.5em;
     font-weight: bold;
 }
-
+*/
 .header {
     background: #c5050c;
     text-align: center;
@@ -28,11 +29,20 @@
     font-size: 30px;
 }
 
+
+
 .map {
     border: medium solid #999;
+    background-color: rgb(179, 216, 239); /* background is just Great Lakes so making blue! */
 }
 
 .counties {
+    fill: #fff;
+    stroke: #a3aeb6;
+    stroke-width: 2px;
+}
+
+.states {
     fill: #fff;
     stroke: #a3aeb6;
     stroke-width: 2px;
