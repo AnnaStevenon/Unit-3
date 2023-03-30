@@ -41,7 +41,7 @@ function setMap(){
         var Counties = topojson.feature(counties, counties.objects.Counties).features; //the .features part puts it in array format for loading each county one by one
         var midStates = topojson.feature(states, states.objects.Midwest_states)
 
-    //add WI Counties to the map all at once - would remove the .features from the above line if doing it this way
+    //add States to the map all at once - would remove the .features 
         var Midwest = map.append("path")
             .datum(midStates) //drawing all counties together
             .attr("class", "states")
