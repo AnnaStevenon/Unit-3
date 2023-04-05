@@ -24,12 +24,15 @@
 */
 .header {
     background: #c5050c;
+    border: medium solid #999;
     text-align: center;
     color: white;
-    font-size: 30px;
+    font-size: 22px;
 }
 
-
+body {
+    background-color: rgb(196, 255, 234);
+}
 
 .map {
     border: medium solid #999;
