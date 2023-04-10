@@ -37,12 +37,20 @@ body {
 .map {
     border: medium solid #999;
     background-color: rgb(179, 216, 239); /* background is just Great Lakes so making blue! */
+    margin: 10px 0 0 20px;
+}
+
+.chart {
+    border: medium solid #999;
+    margin: 10px 20px 0 0;
+
 }
 
 .counties {
     fill: white;
-    stroke: #636568;
-    stroke-width: 2px;
+    stroke: #000;
+    stroke-width: 0.75px;
+    stroke-linecap: round;
 }
 
 .states {
