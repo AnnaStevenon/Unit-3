@@ -18,7 +18,6 @@
     var attrArray = ["Cows", "CowsAndCalves" ,"CornGrain" ,"CornSilage" ,"Oats", "Soybean" ,"Wheat"];
     var expressed = attrArray[0]; //variable selected for intial viewing on the map
 
-
     //set up map
     function setMap(){
         var width = window.innerWidth * 0.45,
@@ -82,9 +81,9 @@
 //function to create coordinated bar chart
 function setChart(csvData, colorScale){
     //chart frame dimensions
-    var chartWidth = window.innerWidth * 0.425,
+    var chartWidth = window.innerWidth * 0.45,
         chartHeight = 500,
-        leftPadding = 25,
+        leftPadding = 50,
         rightPadding = 2,
         topBottomPadding = 5,
         chartInnerWidth = chartWidth - leftPadding - rightPadding,
@@ -102,13 +101,13 @@ function setChart(csvData, colorScale){
     var chartBackground = chart.append("rect")
         .attr("class", "chartBackground")
         .attr("width", chartInnerWidth)
-        .attr("height", chartInnerHeight)
+        .attr("height", chartInnerHeight + 5)
         .attr("transform", translate);
 
     //create a scale to size bars proportionally to frame and for axis
-    var yScale = d3.scaleLinear() // why is the yScale so different now - what is 463???
-        .range([463, 0])
-        .domain([0, 100]);
+    var yScale = d3.scaleLinear()
+        .range([0, chartHeight])
+        .domain([66000, 0]); 
 
     //set bars for each province
     var bars = chart.selectAll(".bar")
@@ -126,7 +125,7 @@ function setChart(csvData, colorScale){
             return i * (chartInnerWidth / csvData.length) + leftPadding;
         })
         .attr("height", function(d, i){
-            return 463 - yScale(parseFloat(d[expressed]));          // heights are all wrong
+            return chartHeight - yScale(parseFloat(d[expressed]));          // heights are all wrong
         })
         .attr("y", function(d, i){
             return yScale(parseFloat(d[expressed])) + topBottomPadding;
@@ -137,13 +136,13 @@ function setChart(csvData, colorScale){
 
     //create a text element for the chart title
     var chartTitle = chart.append("text")
-        .attr("x", 40)
+        .attr("x", 80)
         .attr("y", 40)
         .attr("class", "chartTitle")
-        .text("Number of Variable " + expressed[3] + " in each region");
+        .text("Number of " + expressed + " per County");
 
     //create vertical axis generator
-    var yAxis = d3.axisLeft() //y axis is all wrong values also why does it go to 100?
+    var yAxis = d3.axisLeft() 
         .scale(yScale);
 
     //place axis
@@ -156,8 +155,8 @@ function setChart(csvData, colorScale){
     var chartFrame = chart.append("rect")
         .attr("class", "chartFrame")
         .attr("width", chartInnerWidth)
-        .attr("height", chartInnerHeight)
-        .attr("transform", translate);
+        .attr("height", chartInnerHeight + 5)
+        .attr("transform", translate); 
 };
 
     function joinData(Counties, csvData) {
