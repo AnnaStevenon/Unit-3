@@ -205,7 +205,8 @@ function setChart(csvData, colorScale){
         return Counties;
     };
 
-//function to create color scale generator
+//function to create color scale generator 
+// using natural breaks
     function makeColorScale(data){
         var colorClasses = [
             "#FEE5D9",

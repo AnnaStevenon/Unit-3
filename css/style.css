@@ -76,7 +76,7 @@ body {
 
 .axis text {
     font-family: sans-serif;
-    font-size: 1em;
+    font-size: 1.2em;
     fill: rgb(102, 102, 102);
 }
 
@@ -135,4 +135,5 @@ option {
 .footer {
     position:absolute;
     bottom: 50;
+    font-family: sans-serif;
 }
