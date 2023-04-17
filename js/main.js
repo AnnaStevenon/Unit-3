@@ -18,6 +18,8 @@
     var attrArray = ["Cows", "Cows and Calves" ,"Corn Grain" ,"Corn Silage" ,"Oats", "Soybean" ,"Wheat"];
     var expressed = attrArray[0]; //variable selected for intial viewing on the map
 
+    var yScale
+
     //chart fram dimensions
     var chartWidth = window.innerWidth * 0.45,
     chartHeight = 500,
@@ -27,7 +29,8 @@
     chartInnerWidth = chartWidth - leftPadding - rightPadding,
     chartInnerHeight = chartHeight - topBottomPadding * 2,
     translate = "translate(" + leftPadding + "," + topBottomPadding + ")";
-
+    
+// should define the yscale variable here so it is psuedo global................
 
     //set up map
     function setMap(){
@@ -87,7 +90,7 @@
 
             createDropdown(csvData);
 
-            var yScale = makeYScale(csvData); // call yscale function
+            yScale = makeYScale(csvData); // call yscale function
 
         };
 
@@ -95,15 +98,6 @@
 
 //function to create coordinated bar chart
 function setChart(csvData, colorScale){
-    //chart frame dimensions
-    var chartWidth = window.innerWidth * 0.45,
-        chartHeight = 500,
-        leftPadding = 50,
-        rightPadding = 2,
-        topBottomPadding = 5,
-        chartInnerWidth = chartWidth - leftPadding - rightPadding,
-        chartInnerHeight = chartHeight - topBottomPadding * 2,
-        translate = "translate(" + leftPadding + "," + topBottomPadding + ")";
 
     //create a second svg element to hold the bar chart
     var chart = d3.select("body")
@@ -140,7 +134,7 @@ function setChart(csvData, colorScale){
             return i * (chartInnerWidth / csvData.length) + leftPadding;
         })
         .attr("height", function(d, i){
-            return chartHeight - yScale(parseFloat(d[expressed]));          // heights are all wrong
+            return chartHeight - yScale(parseFloat(d[expressed]));         
         })
         .attr("y", function(d, i){
             return yScale(parseFloat(d[expressed])) + topBottomPadding;
@@ -229,13 +223,16 @@ function setChart(csvData, colorScale){
 
     // make a y scale that changes with attribute data
     function makeYScale(data) {
+        var domainArray = [];
         for (var i=0; i<data.length; i++){
-            var dataMax = Math.max(parseFloat(data[i][expressed]))
-            return dataMax;
+            var val = parseFloat(data[i][expressed]);
+            domainArray.push(val);
         };
+        var max = d3.max(domainArray);
+
         var yScale = d3.scaleLinear()
             .range([0, chartHeight])
-            .domain([dataMax, 0]); 
+            .domain([max, 0]); 
 
         return yScale;
 };
@@ -302,36 +299,68 @@ function setChart(csvData, colorScale){
 
         // recreate the yScale
         var yScale = makeYScale(csvData);
+        // create the axis
+        var yAxis = d3.axisLeft()
+            .scale(yScale);
         //sort, resize, and recolor bars
         var bars = d3.selectAll(".bar")
         //sort bars
-        .sort(function(a, b){
-            return b[expressed] - a[expressed];
-        })
-        .attr("x", function(d, i) {
-            return i * (chartInnerWidth / csvData.length) + leftPadding;
-        })
-        .attr("height", function(d, i) {
-            return chartHeight - yScale(parseFloat(d[expressed]));
-        })
-        .attr("y", function(d, i) {
-            return yScale(parseFloat(d[expressed])) + topBottomPadding
-        })
-        //recolor bars
-        .style("fill", function(d) {
-            var value = d[expressed];
-            if(value) {
-                return colorScale(value);
-            } else {
-                return "#ccc";
-            }
-        });
+            .sort(function(a, b){
+                return b[expressed] - a[expressed];
+            }); /*
+            .attr("x", function(d, i) {
+                return i * (chartInnerWidth / csvData.length) + leftPadding;
+            })
+            .attr("height", function(d, i) {
+                return chartHeight - yScale(parseFloat(d[expressed]));
+            })
+            .attr("y", function(d, i) {
+                return yScale(parseFloat(d[expressed])) + topBottomPadding
+            })
+            //recolor bars
+            .style("fill", function(d) {
+                var value = d[expressed];
+                if(value) {
+                    return colorScale(value);
+                } else {
+                    return "#ccc";
+                }
+            }); */
+        //update the axis
+        var axis = d3.select(".axis")
+            .call(yAxis);
+
+        updateChart(bars, csvData.length, colorScale);
     };
 
+    function updateChart(bars, n, colorScale) {
+        //position bars
+        bars.attr("x", function (d, i) {
+            return i * (chartInnerWidth / n) + leftPadding;
+        })
+            //size/resize bars
+            .attr("height", function (d, i) {
+                return chartHeight - yScale(parseFloat(d[expressed]));
+            })
+            .attr("y", function (d, i) {
+                return yScale(parseFloat(d[expressed])) + topBottomPadding;
+            })
+            //color/recolor bars
+            .style("fill", function (d) {
+                var value = d[expressed];
+                if (value) {
+                    return colorScale(value);
+                } else {
+                    return "#ccc";
+                }
+            });
 
+        //at the bottom of updateChart()...add text to chart title
+        var chartTitle = d3
+            .select(".chartTitle")
+            .text("Number of Variable " + expressed[3] + " in each region");
+    }
 
 
 })(); // the end of the anonymous function at the begining of this code
 
-
-// 4/12 left off at start of example 1.7 
