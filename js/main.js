@@ -18,6 +18,21 @@
     var attrArray = ["Cows", "CowsAndCalves" ,"CornGrain" ,"CornSilage" ,"Oats", "Soybean" ,"Wheat"];
     var expressed = attrArray[0]; //variable selected for intial viewing on the map
 
+    //chart fram dimensions
+    var chartWidth = window.innerWidth * 0.45,
+    chartHeight = 500,
+    leftPadding = 50,
+    rightPadding = 2,
+    topBottomPadding = 5,
+    chartInnerWidth = chartWidth - leftPadding - rightPadding,
+    chartInnerHeight = chartHeight - topBottomPadding * 2,
+    translate = "translate(" + leftPadding + "," + topBottomPadding + ")";
+
+    //scale to size bars
+    var yScale = d3.scaleLinear()
+    .range([0, chartHeight])
+    .domain([66000, 0]); // will need to write a function to deal with different scales
+
     //set up map
     function setMap(){
         var width = window.innerWidth * 0.45,
@@ -73,6 +88,8 @@
             setEnumerationUnits(Counties, map, path, colorScale);
 
             setChart(csvData, colorScale);
+
+            createDropdown(csvData);
 
         };
 
@@ -230,4 +247,78 @@ function setChart(csvData, colorScale){
         });
     };
 
+
+    //function to create a drop down menu and change listener and handler function
+    function createDropdown(csvData) {
+        //add select element
+        var dropdown = d3.select("body")
+            .append("select")
+            .attr("class", "dropdown")
+            .on("change", function(){
+                changeAttribute(this.value, csvData)
+            });
+
+        //add intial option
+        var titleOption = dropdown.append("option")
+            .attr("class", "titleOption")
+            .attr("disabled", "true")
+            .text("Select Attribute");
+
+        //add attribute name options
+        var attrOptions = dropdown.selectAll("attrOptions")
+            .data(attrArray)
+            .enter()
+            .append("option")
+            .attr("value", function(d){ return d})
+            .text(function(d) { return d});
+    };
+
+    //dropdown change event handler
+    function changeAttribute(attribute, csvData){
+        //change the expressed attribute
+        expressed = attribute;
+        //recreate the color scale
+        var colorScale = makeColorScale(csvData);
+        //recolor enumeration units
+        var counties = d3.selectAll(".counties").style("fill", function (d) {
+            var value = d.properties[expressed];
+            if (value) {
+                return colorScale(d.properties[expressed]);
+            } else {
+                return "#ccc";
+            }
+        });
+
+        //sort, resize, and recolor bars
+        var bars = d3.selectAll(".bar")
+        //sort bars
+        .sort(function(a, b){
+            return b[expressed] - a[expressed];
+        })
+        .attr("x", function(d, i) {
+            return i * (chartInnerWidth / csvData.length) + leftPadding;
+        })
+        .attr("height", function(d, i) {
+            return chartHeight - yScale(parseFloat(d[expressed]));
+        })
+        .attr("y", function(d, i) {
+            return yScale(parseFloat(d[expressed])) + topBottomPadding
+        })
+        //recolor bars
+        .style("fill", function(d) {
+            var value = d[expressed];
+            if(value) {
+                return colorScale(value);
+            } else {
+                return "#ccc";
+            }
+        });
+    };
+
+
+
+
 })(); // the end of the anonymous function at the begining of this code
+
+
+// 4/12 left off at start of example 1.7 
