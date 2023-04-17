@@ -15,7 +15,7 @@
         // global variables in the libraries might have the same name and they could overwrite eachother - oh no!
 
     // variables for data join
-    var attrArray = ["Cows", "CowsAndCalves" ,"CornGrain" ,"CornSilage" ,"Oats", "Soybean" ,"Wheat"];
+    var attrArray = ["Cows", "Cows and Calves" ,"Corn Grain" ,"Corn Silage" ,"Oats", "Soybean" ,"Wheat"];
     var expressed = attrArray[0]; //variable selected for intial viewing on the map
 
     //chart fram dimensions
@@ -28,10 +28,6 @@
     chartInnerHeight = chartHeight - topBottomPadding * 2,
     translate = "translate(" + leftPadding + "," + topBottomPadding + ")";
 
-    //scale to size bars
-    var yScale = d3.scaleLinear()
-    .range([0, chartHeight])
-    .domain([66000, 0]); // will need to write a function to deal with different scales
 
     //set up map
     function setMap(){
@@ -90,6 +86,8 @@
             setChart(csvData, colorScale);
 
             createDropdown(csvData);
+
+            var yScale = makeYScale(csvData); // call yscale function
 
         };
 
@@ -229,6 +227,19 @@ function setChart(csvData, colorScale){
         return colorScale;
     };
 
+    // make a y scale that changes with attribute data
+    function makeYScale(data) {
+        for (var i=0; i<data.length; i++){
+            var dataMax = Math.max(parseFloat(data[i][expressed]))
+            return dataMax;
+        };
+        var yScale = d3.scaleLinear()
+            .range([0, chartHeight])
+            .domain([dataMax, 0]); 
+
+        return yScale;
+};
+
     function setEnumerationUnits(Counties, map, path, colorScale) {
         
         var WICounties = map
@@ -289,6 +300,8 @@ function setChart(csvData, colorScale){
             }
         });
 
+        // recreate the yScale
+        var yScale = makeYScale(csvData);
         //sort, resize, and recolor bars
         var bars = d3.selectAll(".bar")
         //sort bars
