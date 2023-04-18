@@ -21,7 +21,7 @@
     var yScale
 
     //chart fram dimensions
-    var chartWidth = window.innerWidth * 0.45,
+    var chartWidth = window.innerWidth * 0.50,
     chartHeight = 500,
     leftPadding = 50,
     rightPadding = 2,
@@ -77,8 +77,8 @@
             var Midwest = map.append("path")
                 .datum(midStates) //drawing all counties together
                 .attr("class", "states")
-                .attr("d", path); //setting "d" to the path variable, "d" defines the coordinates of the path - has nothing to do with d used in a function
-
+                .attr("d", path) //setting "d" to the path variable, "d" defines the coordinates of the path - has nothing to do with d used in a function
+                .style("fill", "#d1e0d1");
 
             Counties = joinData(Counties, csvData);
 
@@ -256,6 +256,7 @@ function setChart(csvData, colorScale){
 
         return yScale;
 };
+
 
     function setEnumerationUnits(Counties, map, path, colorScale) {
         

@@ -30,6 +30,7 @@
     color: white;
     font-size: 22px;
     font-family: sans-serif;
+    border-radius: 25px;
 }
 
 body {
@@ -57,6 +58,7 @@ body {
 
 .chartBackground {
     fill:  rgb(179, 216, 239);
+  
 }
 
 .chartFrame {
@@ -104,6 +106,7 @@ body {
     padding: 2px;
     border: 1px solid #999;
     box-shadow: 2px 2px 4px #999;
+    border-radius: 10px;
 }
 
 option {
@@ -120,6 +123,7 @@ option {
     border: 1px solid #999;
     padding: 5px 10px;
     top: -75px;
+    border-radius: 25px;
 }
 
 .infolabel h1 {
@@ -137,3 +141,4 @@ option {
     bottom: 50;
     font-family: sans-serif;
 }
+
