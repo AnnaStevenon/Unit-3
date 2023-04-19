@@ -420,7 +420,11 @@ function setChart(csvData, colorScale){
     function setLabel(props) {
         console.log("here!");
         //label content
-        var labelAttribute = "<h1>" + props[expressed] + "</h1><br><b>" + expressed + "</b>";
+        if(props[expressed]> 0){
+            var labelAttribute = "<h1>" + props[expressed] + "</h1><br><b>" + expressed + "</b>";
+        } else {
+            labelAttribute = "<h3>" + "No data" + "</h3>"
+        }
 
         //create info label div
         var infolabel = d3
