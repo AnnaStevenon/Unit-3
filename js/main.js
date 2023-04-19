@@ -272,7 +272,7 @@ function setChart(csvData, colorScale){
             .style("fill", function(d) {
                 if (d.properties[expressed] > 0) {
                 return colorScale(d.properties[expressed])}
-                else { return "gray"} // data with a zero means that data was not publishable/available for that county, there are no "zero" values that mean the yield or number of cows was zero.
+                else { return "#ccc"} // data with a zero means that data was not publishable/available for that county, there are no "zero" values that mean the yield or number of cows was zero.
             })
             .on("mouseover", function(event, d){
                 highlight(d.properties);
