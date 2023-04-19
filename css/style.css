@@ -115,7 +115,7 @@ option {
 
 
 .infolabel {    margin: 0 20px 0 0;    position: absolute;
-    height: 50px;
+    height: 75px;
     font-family: sans-serif;
     min-width: 100px;
     color: #000000;

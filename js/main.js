@@ -430,7 +430,7 @@ function setChart(csvData, colorScale){
             .attr("id", props.County + "_label")
             .html(labelAttribute);
 
-        var regionName = infolabel.append("div").attr("class", "labelname").html(props.name);
+        var countyName = infolabel.append("div").attr("class", "labelname").html(props.County);
     }
 
     //function to move info label with mouse
