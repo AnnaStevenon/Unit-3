@@ -209,11 +209,11 @@ function setChart(csvData, colorScale){
 // using natural breaks
     function makeColorScale(data){
         var colorClasses = [
-            "#FEE5D9",
-            "#FCAE91",
-            "#FB6A4A",
-            "#DE2D26",
-            "#A50F15"
+            "#FFFFCC",
+            "#C2E699",
+            "#78c679",
+            "#31a354",
+            "#006837"
         ];
 
     //create color scale generator
